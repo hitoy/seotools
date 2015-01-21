@@ -32,6 +32,7 @@ class Translator():
             error_msg='Translate Error: '+result['error_msg']
             raise TrsltError(error_msg)
         else:
+            #print (result['trans_result'][0]['src'],result['trans_result'][0]['dst'])
             return (result['trans_result'][0]['src'],result['trans_result'][0]['dst'])
 
 
@@ -64,13 +65,16 @@ if __name__ == '__main__':
             trs=Translator(key)
             resu=trs.translate()
             print "%s -->> %s"%resu
-            rfile.write(resu[1]+'\n')
+            rfile.write(resu[1].encode('utf-8')+'\n')
             rfile.flush()
             time.sleep(ttl)
         except TrsltError,e:
             print e
             continue
         except KeyboardInterrupt,e:
+            break
+        except Exception,e:
+            print e
             break
     kfile.close()
     rfile.close()
