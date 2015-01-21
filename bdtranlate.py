@@ -9,7 +9,7 @@ class TrsltError(Exception):
         return repr(self.message)
 
 class Translator():
-    def __init__(self,string,key="T93TH0Y1x5262LZSkHr5tLZx",api="http://openapi.baidu.com/public/2.0/bmt/translate",slang="auto",tlang="spa"):
+    def __init__(self,string,key="T93TH0Y1x5262LZSkHr5tLZx",api="http://openapi.baidu.com/public/2.0/bmt/translate",slang="auto",tlang="auto"):
         self.string=string
         self.key=key
         self.api=api
@@ -62,7 +62,7 @@ if __name__ == '__main__':
         try:
             key=kfile.readline().strip()
             if not key:break
-            trs=Translator(key)
+            trs=Translator(key,slang=slang,tlang=tlang)
             resu=trs.translate()
             print "%s -->> %s"%resu
             rfile.write(resu[1]+'\n')
