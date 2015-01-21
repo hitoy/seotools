@@ -46,7 +46,7 @@ if __name__ == '__main__':
     slang=getargu('-slang')
     tlang=getargu('-tlang')
     try:
-        ttl=getargu('-t')
+        ttl=int(getargu('-t'))
     except:
         ttl=10
 
