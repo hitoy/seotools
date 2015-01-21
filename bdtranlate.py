@@ -73,10 +73,8 @@ if __name__ == '__main__':
             continue
         except KeyboardInterrupt,e:
             break
-        '''
         except Exception,e:
             print e
             break
-        '''
     kfile.close()
     rfile.close()
