@@ -1,0 +1,44 @@
+* {margin:0;padding:0}
+html,body {width:100%;height:100%;font-size:13px}
+body {font-size:12px;font-family:Arial,Verdana}
+ul,ol,li{list-style:none}
+a{text-decoration:none}
+.clear {clear:both}
+
+.head {width:960px;margin:0 auto}
+.banner {width:960px;height:275px;margin:0 auto;background:url(./banner2.jpg) no-repeat top center}
+.main {width:960px;margin:10px auto;font-size:14px;line-height:20px}
+.main img {width:23%;}
+.footer {width:100%;margin-top:10px;background:#eee;border-top:4px solid #fec601;text-align:center;padding:10px 0;line-height:20px;clear:both}
+
+.main .content {width:65%;float:left;margin-top:10px;}
+.main .sidebar {float:right;width:30%;line-height:30px;;padding-top:15px}
+.main .sidebar img {max-width:100%;width:90%}
+.main .conten ul {border-bottom:1px dotted #ccc;}
+.main .content h1 {font-size:25px;line-height:50px;border-bottom:1px solid #ccc;}
+.main .content a{font-size:15px;color:#104D3A;line-height:30px}
+.main .content a:hover {text-decoration:underline}
+.main .article {margin:10px 0;}
+.main .article  * {color:#6B6B6B;line-height:1.7;}
+.main .article .quickinq input {height:18px;margin:2px 0}
+.main .article .titlebanner {width:100%}
+.main .message {width:90%;border:1px solid #fec601;padding:15px 5% 0 5%;border-radius:5px;background:#eee;font-size:14px;line-height:28px;padding-bottom:10px;clear:both}
+.main .message p {height:30px;line-height:30px;margin-top:8px}
+.main .message input[type='text'] {width:75%;height:25px;padding-left:1%;}
+.main .message label {width:60px;display:block;float:left;line-height:30px;margin-right:1%}
+.main .message textarea {width:80%;max-width:80%;height:150px;margin-top:15px}
+.main .message input[type='submit'] {width:120px;height:25px;cursor:pointer;margin-left:10%}
+.main .page {width:100%;padding:20px;float:left}
+.main .page ul li {float:left;padding:10px;border:1px solid #ccc;margin-right:15px}
+.main .page ul li a {display:block;font-weight:bold}
+
+.article ul.list li{list-style:none;width:100%;float:left;margin-bottom:10px}
+.article ul.list li h2{font-size:18px;margin:5px;}
+.article ul.list li img{dislplay:block;float:left;max-width:120px;max-height:120px;border-radius:5px;box-shadow:5px 5px 5px #ccc;margin-right:10px}
+
+@media(max-width:986px){
+.head {width:100%}
+.banner{width:100%}
+.main {width:100%}
+.main img {width:45%;}
+}
