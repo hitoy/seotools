@@ -61,6 +61,23 @@ class ContentList{
     }
 
 
+    public function showall(){
+        $urls=array();
+        foreach($this->list as $s){
+            $fd=fopen($s,"r");
+            while(!feof($fd)){
+                $title=trim(fgets($fd));
+                if(strlen($title) > 0){
+                    $url=urlencode(preg_replace("/[\s]+/i","-",$title));
+                    array_push($urls,$url);
+                }
+            }
+            fclose($fd);
+        }
+        return $urls;
+    }
+
+
     public function __destruct(){
         if(!empty($this->keyfd)){
             fclose($this->keyfd);   

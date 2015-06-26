@@ -27,5 +27,4 @@ function getpostname(){
     }
 }
 
-
 $list=new ContentList();

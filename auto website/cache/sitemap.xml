@@ -1,0 +1,51 @@
+<br />
+<b>Notice</b>:  Undefined offset: 1 in <b>E:\wwwroot\init.php</b> on line <b>26</b><br />
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<title></title>
+<link rel="stylesheet" type="text/css" href="/templates/style.css"/>
+</head>
+<body>
+<div class="head">
+<h1>Construction Brick Machine</h1>
+</div>
+<div class="banner"></div>
+<div class="main">
+<p>A brick is a block or a single unit of a kneaded clay-bearing soil, sand and lime, or concrete material, fire-hardened or air-dried, used in masonry construction. Lightweight bricks (also called "lightweight blocks") are made from expanded clay aggregate. Fired bricks are the most numerous type and are laid in courses and numerous patterns known as bonds, collectively known as brickwork, and may be laid in various kinds of mortar to hold the bricks together to make a durable structure. Bricks are produced in numerous classes, types, materials, and sizes which vary with region and time period, and are produced in bulk quantities. Two basic categories of bricks are fired and non-fired bricks. Fired bricks are one of the longest-lasting and strongest building materials, sometimes referred to as artificial stone, and have been used since circa 5000 BC. Air-dried bricks, also known as mudbricks, have a history older than fired bricks, and have an additional ingredient of a mechanical binder such as straw.</p>
+<p>
+BCM is a professional manufacturer and exporter with advanced brick making machine and other machinery. As one of the greatest brick making manufacturers in China, with both R&D and production capabilities, the company possesses superior technology and equipment. Strong support is provided by the R&D team and considerate after-sales service employees.</p>
+<div class="content">
+<h1></h1>
+<div class="article">
+<script src="/templates/brick.js"></script>
+<img src="/templates/oil.png" alt="oil press" class="titlebanner"/>
+</div>
+<div class="message">
+<h2>Get Support Or Price</h2>
+<form action="http://data.caerostris.net/message_do.php" method="post" onsubmit="this.url.value=window.top.location.href">
+<p><label>Name</label><input name="name" type="text" value="" required="required"></p>
+<p><label>Email</label> <input name="email" type="text" value="" required="required"></p>
+<p><label>Product</label><input name="product" type="text" value=""></p>
+<label>Message</label><textarea name="message" required="required"></textarea>
+<p><input type="submit" value="Submit">
+<input type="hidden" name="url" value=""></p>
+</form>
+</div>
+</div>
+<div class="sidebar">
+<h2>About Us</h2>
+<p>
+BSM manufactures a wide selection of Clay and Flyash bricks, block and concrete-product machines. These are all manufactured using the latest global technology and quality management standards for the industry. Using economical and green materials. These are utilized in countless applications, from building construction to hardscaping, as they also play a vital role in controlling soil erosion. We abide by the corporate idea of honest high quality and innovation, stick to the principia of consumer first and consumer's successful is our successful, work hardly for the promise of consumer, the service team of industrious and speciality will supply service of betimes good quality.</p>
+<img src="/templates/oil-press.jpg" alt="brick machine"/>
+<a href="javascript:javascript:openZoosUrl();"><img src="/templates/online.jpg" alt="oil press"/></a>
+<div class="clear"></div>
+</div>
+<div class="clear"></div>
+</div>
+<div class="footer">
+    <p>&copy; 2015 BCM &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Powered By HCMS</p>
+</div>
+</body>
+</html>
