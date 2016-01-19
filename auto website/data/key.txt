@@ -1,0 +1,4 @@
+https://www.hitoy.org/file-process-in-web-front-end.html
+给树莓派安装ArchLinux
+https://www.hitoy.org/python-unicodeencodeerror-analysis.html
+PHP输出缓冲及其应用
