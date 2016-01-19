@@ -4,6 +4,4 @@ require_once("./init.php");
  * $list   列表类
  *
  */
-
-$list->add_list("Brick Making Machine",ABPATH."/data/1.txt");
 $router->route();

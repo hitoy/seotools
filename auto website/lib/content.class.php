@@ -92,3 +92,31 @@ class Bing extends collection{
         return $content;
     }
 }
+
+
+class Yandex extends collection{
+	public function geturl(){
+	 return "https://yandex.com/search/xml?user=hitoy2015&key=03.342224283:96c3252026935a65f6cc0475cedf3519&query=".urlencode($this->title)."&l10n=en&sortby=tm.order%3Dascending&filter=strict&groupby=attr%3Dd.mode%3Ddeep.groups-on-page%3D30.docs-in-group%3D3";
+	}
+
+	 public function get_the_content($ttag="h2",$ctag="p"){
+		 $xml = simplexml_load_string($this->get_the_html());
+		 $tmp1 = $xml->xpath('response');		
+		 $tmp2 = $tmp1[0]->xpath('results');
+		 $tmp3 = $tmp2[0]->xpath('grouping');
+		 $tmp4 = $tmp3[0]->xpath('group');
+
+		 $content = "";
+
+		 foreach($tmp4 as $obj){
+			$tmp = ($obj->xpath('doc')[0]);
+			$title = $tmp->title->asXML();
+			$c = ($tmp->passages->asXML());
+			$title = preg_replace("/<[^>]*>/","",$title);
+			$c = preg_replace("/<[^>]*>/","",$c);
+			$content .= "<$ttag>$title</$ttag>\r\n<$ctag>$c</$ctag>\r\n";
+		 }
+		 return $content;
+	}
+
+}

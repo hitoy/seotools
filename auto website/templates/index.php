@@ -1,37 +1,97 @@
+<?php
+require_once(ABPATH."/lib/content.php");
+$list = new CONTENT(keyfile);
+$offset = ($page-1)*10;
+$the_content = $list->get_the_list($offset);
+?>
 <!DOCTYPE HTML>
 <html lang="en-US">
 <head>
-<meta charset="utf-8">
-<title><?php echo webname;?></title>
-<link rel="stylesheet" type="text/css" href="/templates/style.css"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="applicable-device" content="pc,mobile">
+<meta name="referrer" content="always">
+<title><?php echo webname." - ".host?></title>
+<link rel="stylesheet" type="text/css" media="all" href="//<?php echo host;?>/templates/media/style.css?v=1"/>
 </head>
 <body>
-<div class="head">
-    <h1><?php echo webname;?></h1>
+<header class="siteheader">
+    <div class="top">
+	<a href="//<?php echo host;?>/" rel="home"><?php echo webname;?></a>
+        <nav class="primary">
+			<ul>
+				<li><a href="//<?php echo host;?>">Home</a></li>
+				<li><a href="//<?php echo host;?>">Boilers</a></li>
+				<li><a href="//<?php echo host;?>">Case</a></li>
+				<li><a href="//<?php echo host;?>">About Us</a></li>
+				<li><a href="http://data.zgboilers.com/tailored/">Tailored Boilers</a></li>
+			</ul>
+		</nav>
+    </div>
+</header>
+<div class="content">
+<main role="main">
+<div class="banner">
+	<img src="//<?php echo host;?>/templates/media/banner<?php echo rand(1,18);?>.jpg" alt="Industrial Boiler Expert">
 </div>
-<div class="banner"></div>
-<div class="main">
-<p>BSM is a company specialized in producting Automatic brick machine , aerated concrete block production line, the aerated concrete wall panel production line, autoclaved lime sand brick production line, autoclave etc. A and second-class pressure vessel, aerated concrete blocks, sand-lime brick, panel products, plant asphalt nine series,more than 60 varieties.</p>
-<br/>
-<p>We supply quality Brick Making Machines in the whole world . We are capable of manufacturing and supplying the machines either in manual, semi automatic or automatic operations. Through years of research & development efforts and continuos cultivation of creative and innovative mindset and spirit among our employees, we have been able to produce machines in highest quality & reliability, with competitive market pricings. We emphasis on customer services and our employees are always ready to serve our customers in their best efforts and commitments. </p>
-<img src="/uploads/1.jpg" alt="brick making machine"/>
-<img src="/uploads/2.jpg" alt="Automatic Fly Ash Brick making Plant"/>
-<img src="/uploads/3.jpg" alt="Automatic Fly Ash Brick making Plant"/>
-<img src="/uploads/4.jpg" alt="brick making machine"/>
-<img src="/uploads/5.jpg" alt="brick making machine"/>
-<img src="/uploads/6.jpg" alt="brick making machine"/>
-<img src="/uploads/7.jpg" alt="brick making machine"/>
-<img src="/uploads/8.jpg" alt="brick making machine"/>
-<br/>
-<h2>Our Team</h2>
+<?php
+foreach($the_content as $single){
+?>
+	<article id="post-<?php echo $single['id']?>" class="post">
+	<header><h2><a href="//<?php echo host;?>/<?php echo $single['titlehash']?>"><?php echo $single['title'];?></a></h2></header>
+		<div class="entry-content">
+			<?php echo getabstract($single['content'], 600);?>
+            </div>
+            <footer class="entry-footer">
+			<span class="pubdate"><time datetime="<?php echo date("Y-m-d H:i:s",$single['mdate']);?>" pubdate="pubdate"><?php echo date("Y-m-d",$single['mdate']);?></time></span>
+				<span class="comments"><a href="//<?php echo host;?>/<?php echo $single['titlehash']?>#respond">GET DETAIL</a></span>
+                <span class="category"><a href="//<?php echo host;?>/<?php echo $single['titlehash']?>">MORE</a></span>
+            </footer>
+    </article>
+<?php
+}
+echo $list->pageinfo();
+?>
+</main>
+<aside>
+<section class="widget">
+<h2>History</h2>
 <p>
-Each and every member of our team is highly specialised in his particular field of expertise and our technical ream has over 50 years combined experience in developing and manufacturing brick making machinery. We are a close-knit group of people that enjoys doing what we do and take pride in the products and services that we supply.
-<br/>
-<h2>Quality Policy</h2>
-<p>We are competent to maintain and create firm and long-lasting relationship with our clients by providing them quality equipment. Quality of our products is everlasting as we to achieve customer satisfaction by providing consistent of agriculture and domestic equipment, through continual improvement in process. We have a team of quality invigilators who keeps vigilant check on the use of quality raw material and look after the maintenance of the quality through out the manufacturing process retaining the superb quality.</p>
+Zhengzhou Boiler Co,. Ltd have been manufacturing industrial boilers including Steam Boilers, Hot Water Boilers and Waste Heat Boilers for over 70 years. We are a joint-stock enterprise with A1, A2, C3 pressure vessel design and manufacture license permits.
+<img src="//<?php echo host;?>/templates/media/70years.png" alt="70 years history boiler factory" width="100%">
+</p>
+</section>
+<section class="widget">
+<h2>Latest Article</h2>
+<ul>
+<?php
+$size = rand(5,10);
+$list_content = $list->get_the_hot(0,$size);
+foreach($list_content as $s){
+	echo '<li><a href="//'.host.'/'.$s['titlehash'].'">'.$s['title'].'</a></li>';
+}
+?>
+</ul>
+</section>
+<section class="widget">
+<h2>Hot Article</h2>
+<ul>
+<?php
+$size = 5;
+$offset = floor($list->totalrecord/rand(2,10));
+$randlist = $list->get_the_hot($offset,$size);
+foreach($randlist as $list){
+echo '<li><a href="//'.host.'/'.$list['titlehash'].'">'.$list['title'].'</a></li>';
+}
+?>
+</ul>
+</section>
+</aside>
 </div>
-<div class="footer">
-    <p>&copy; 2015 BCM &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Powered By HCMS</p>
-</div>
+<div style="clear:both"></div>
+<footer class="sitefooter">
+<div class="fo"><span class="copy">&copy; 2016 <?php echo host?></span></div>
+</footer>
+<script language="javascript" src="http://pat.zoosnet.net/JS/LsJS.aspx?siteid=PAT67433781&float=1&lng=en"></script>
 </body>
 </html>
