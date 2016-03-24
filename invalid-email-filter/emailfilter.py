@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 # Author Hito https://www.hitoy.org/
 import re,sys,socket,dns.resolver
-emaildomain = re.compile(r"@([a-zA-Z0-9\.\-\_]+\.[a-zA-Z]{2,6})")
+emaildomain = re.compile(r"@([a-zA-Z0-9\.\-\_]+\.[a-zA-Z]{2,6})",re.I)
 #print emaildomain.findall("vip@hitoy.org")
 #exit()
 def is_domain_exists(domain):
