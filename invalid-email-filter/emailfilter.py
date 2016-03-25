@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 # Author Hito https://www.hitoy.org/
-import re,sys,socket,dns.resolver
+import re,sys,socket,urllib2,dns.resolver
 emaildomain = re.compile(r"@([a-zA-Z0-9\.\-\_]+\.[a-zA-Z]{2,6})",re.I)
-#print emaildomain.findall("vip@hitoy.org")
-#exit()
+
+#Please Change The Fllow configure
+smtpserver = "hello.zgboilers.net"
+mailfrom = "hi@hello.zgboilers.net"
+
 def is_domain_exists(domain):
     try:
         ip = socket.getaddrinfo(domain,'http')
@@ -13,14 +16,55 @@ def is_domain_exists(domain):
     except:
         return False
 
-def is_mx_exists(domain):
+def get_mx_record(domain):
     try:
-        answers = dns.resolver.query(domain,'MX')
-        return True
+        record = list()
+        mx = dns.resolver.query(domain,'MX')
+        for i in mx:
+            record.append((i.preference,i.exchange.to_text()))
+        return record
     except dns.resolver.NoAnswer:
         return False
     except BaseException,e:
         return False
+
+def logging(logstr,logfile="./filter.log"):
+    log = open(logfile,"ab")
+    log.write(logstr+"\n")
+    log.close()
+
+def is_user_exists(mx_record,email):
+    sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    sock.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
+    sock.settimeout(8)
+    sock.connect((mx_record,25))
+    is_ok = sock.recv(1024).strip()
+    if not is_ok[:3] == "220":
+        logging(email+": "+is_ok)
+        sock.close()
+        return False
+    sock.send("HELO %s\r\n"%smtpserver)
+    resp = sock.recv(1024).strip()
+    if not resp[:3] == "250":
+        logging(email+": "+resp)
+        sock.close()
+        return False
+    sock.send("Mail From:<%s>\r\n"%mailfrom)
+    resp = sock.recv(1024).strip()
+    if not resp[:3] == "250":
+        logging(email+": "+resp)
+        sock.close()
+        return False
+    sock.send("Rcpt To:<%s>\r\n"%email)
+    resp = sock.recv(1024).strip()
+    if not resp[:3] == "250":
+        logging(email+": "+resp)
+        sock.close()
+        return False
+    sock.close()
+    logging(email+": email exists!")
+    return True
+
 
 savekeyfile = None
 savefile = None
@@ -46,22 +90,46 @@ if savekeyfile:
         print e
         sys.exit(-1)
 
-
 while True:
     line = emailfile.readline()
     if not line:
         break
-    line = line.strip()
-    if not line:
+    email = line.strip()
+    if not email:
         continue
-    
-    domainlist = emaildomain.findall(line)
+    #Get List domain
+    domainlist = emaildomain.findall(email)
     if len(domainlist) == 0:
         continue
     domain = domainlist[0]
-    if not is_mx_exists(domain):
+    mxlist = get_mx_record(domain)
+    if not mxlist or len(mxlist) == 0:
         continue
-    if not savefile:
-        print line
-    else:
-         savefile.write(line+"\r\n")
+
+    #if domain has a mx record
+    for ex in mxlist:
+        preference = ex[0]
+        exchange = ex[1].strip(".")
+        try:
+            user_exists = is_user_exists(exchange,email)
+        except socket.gaierror:
+            continue
+        except socket.timeout:
+            continue
+        except socket.error:
+            continue
+        except KeyboardInterrupt:
+            break
+
+        if user_exists:
+            if savefile:
+                savefile.write(email+"\r\n")
+            else:
+                print email
+            break
+        else:
+            if savefile:
+                print "Email %s does not exist"%email
+
+savefile.close()
+emailfile.close()
