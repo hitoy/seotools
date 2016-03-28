@@ -3,10 +3,21 @@
 # Author Hito https://www.hitoy.org/
 import re,sys,socket,urllib2,dns.resolver
 emaildomain = re.compile(r"@([a-zA-Z0-9\.\-\_]+\.[a-zA-Z]{2,6})",re.I)
+domainre = re.compile(r"^[a-zA-Z0-9\.\-\_]+\.[a-zA-Z]{2,6}$",re.I)
 
-#Please Change The Fllow configure
-smtpserver = "hello.zgboilers.net"
-mailfrom = "hi@hello.zgboilers.net"
+def get_current_addr():
+    try:
+        return urllib2.urlopen("http://lab.hitoy.org/api/gettheip").read()
+    except Exception,e:
+        logging(str(e))
+        return False
+
+def get_domain_addr(domain):
+    try:
+        return socket.getaddrinfo(domain,"80")[0][4][0]
+    except Exception,e:
+        logging(str(e))
+        return False
 
 def is_domain_exists(domain):
     try:
@@ -32,6 +43,24 @@ def logging(logstr,logfile="./filter.log"):
     log = open(logfile,"ab")
     log.write(logstr+"\n")
     log.close()
+
+
+smtpserver = None 
+current_addr = get_current_addr()
+while not smtpserver:
+    smtpserver = raw_input("\r\nPlease Input Current SMTP Address\r\nA domain name pointer to current Network address(A Record):").strip()
+    if not domainre.findall(smtpserver):
+        print "\r\nDomain invalid!"
+        smtpserver = None
+    elif not get_domain_addr(smtpserver):
+        print "\r\nDomain not Exists!"
+        smtpserver = None
+    elif not current_addr == get_domain_addr(smtpserver):
+        print "\r\nThe Domain your input does not point to the current IP\r\nPlease Add A Record to the domain you input!"
+        smtpserver = None
+
+mailfrom = "hi@%s"%smtpserver
+
 
 def is_user_exists(mx_record,email):
     sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -131,5 +160,6 @@ while True:
             if savefile:
                 print "Email %s does not exist"%email
 
-savefile.close()
 emailfile.close()
+if savefile:
+    savefile.close()
