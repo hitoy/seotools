@@ -1,36 +1,3 @@
-<?php
-if($_GET){
-require_once("./sender.php");
-define("lyURI","http://120.26.66.24/msg/HttpBatchSendSM");
-define("lyUSER","zzgl_hy");
-define("lyPASD","zzgl_hy123");
-define("lySIG","【郑锅股份】");
-$recv = urldecode($_GET['recv']);
-$content = urldecode($_GET['content']);
-$callback = $_GET['callback'];
-header("Content-Type:text/javascript");
-if(!$recv){
-echo $callback."('发送失败，发件人不存在!')";
-exit();
-}
-if(!$content){
-echo $callback."('发送失败，内容不存在!')";
-exit();
-}
-$lyAPI= new LYAPI(lyURI,lyUSER,lyPASD);
-$sms = lySIG.$content;
-$lyAPI->add_content($sms);
-$result = $lyAPI->sendone('',$tel);
-
-if($result['error_code'] == 0){
-	echo $callback."(".$recv."'发送成功!')";
-}else{
-	echo $callback."(".$recv."'发送发送失败'.$result['reason'])";
-}
-
-}
-
-?>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -66,59 +33,71 @@ if(!window.localStorage) {alert('不支持此浏览器，请使用高级浏览�
 var db;
 var key = 'smslog';
 document.addEventListener("DOMContentLoaded",function(){
-        db = openDatabase("contactDB","1.0","contact DB",1024*1024*200);
-        db.transaction(function(context){
-            //context.executeSql("drop table contacts");
-            context.executeSql("Create table if not exists contacts(id INTEGER PRIMARY KEY AUTOINCREMENT,tel varchar(15) unique, name varch(20))");
-            });
-        //2, contacts
-        db.transaction(function(context){
-            context.executeSql("select * from contacts",[],function(context,result){
-                var clist = document.getElementsByClassName("list")[0];
-                var len = result.rows.length;
-                for(var i = 0 ; i < len ; i++){
+    db = openDatabase("contactDB","1.0","contact DB",1024*1024*200);
+    db.transaction(function(context){
+        //context.executeSql("drop table contacts");
+        context.executeSql("Create table if not exists contacts(id INTEGER PRIMARY KEY AUTOINCREMENT,tel varchar(15) unique, name varch(20))");
+    });
+    //2, contacts
+    db.transaction(function(context){
+        context.executeSql("select * from contacts",[],function(context,result){
+            var clist = document.getElementsByClassName("list")[0];
+            var len = result.rows.length;
+            for(var i = 0 ; i < len ; i++){
                 var span = document.createElement("span");
                 span.setAttribute('data-id',result.rows.item(i).id);
                 span.innerHTML='<tel>'+result.rows.item(i).tel+'</tel><name>'+(result.rows.item(i).rowid||'')+'</name>';
                 clist.appendChild(span);
-                }
-                });
-            });
-        //3, log
-        var data = localStorage.getItem(key);
-        document.getElementsByClassName("status")[0].innerHTML= data;
-        //4, sendsms
-        document.getElementById("sendsms").addEventListener("click",function(){
-                var text = document.getElementsByTagName("textarea")[0].value.trim();
-                var recv=new Array();
-                var span = document.getElementsByClassName("selected");
-                for(var i = 0 ; i < span.length;i++){
-                recv.push(span[i].childNodes[0].innerHTML);  
-                }
+            }
+        });
+    });
+    //3, log
+    var data = localStorage.getItem(key);
+    document.getElementsByClassName("status")[0].innerHTML= data;
+    //4, sendsms
+    document.getElementById("sendsms").addEventListener("click",function(e){
+        var text = document.getElementsByTagName("textarea")[0].value.trim();
+        var recv=new Array();
+        var span = document.getElementsByClassName("selected");
+        for(var i = 0 ; i < span.length;i++){
+            recv.push(span[i].childNodes[0].innerHTML);  
+        }
 
-                if(text==''){alert("信息内容为空!");return false}
-                if(text.length > 64){
+        if(text==''){alert("信息内容为空!");return false}
+            if(text.length > 64){
                 var conf = confirm("信息长度超过限制，是否要发送?");
                 if(conf===false) return false;
-                }
-                if(recv.length==0){
-                alert("收件人为空，请选择收件人!");
-                return false;
-                }
-                sendsms(recv,text,1,'write_log',function(){
-                    write_log("信息全部发送完毕!");
-                    });
-                });
-        //5, select recv
-        document.getElementsByClassName("list")[0].addEventListener("click",function(e){
-                if(e.target.tagName == 'SPAN'){
+            }
+        if(recv.length==0){
+            alert("收件人为空，请选择收件人!");
+            return false;
+        }
+        e.target.setAttribute("disabled",true);
+        e.target.value="发送中...";
+        sendsms(recv,text,1,'write_log',function(){
+            e.target.removeAttribute("disabled");
+            e.target.value="开始发送";
+            write_log("信息全部发送完毕!");
+        });
+    });
+    //5, select recv
+    document.getElementsByClassName("list")[0].addEventListener("click",function(e){
+        if(e.target.tagName == 'SPAN'){
+            if(e.target.className=="selected"){
+                e.target.className="";
+            }else{
                 e.target.className="selected";
-                }else if(e.target.tagName == 'TEL'){
+            }
+        }else if(e.target.tagName == 'TEL'){
+            if(e.target.parentNode.className == "selected"){
+                e.target.parentNode.className="";
+            }else{
                 e.target.parentNode.className="selected";
-                }else if(e.target.tagName =='NAME'){
-                e.target.setAttribute("contenteditable",true);
-                }
-                },false);
+            }
+        }else if(e.target.tagName =='NAME'){
+            e.target.setAttribute("contenteditable",true);
+        }
+    },false);
 });
 
 function write_log(log){
@@ -173,23 +152,23 @@ function save_contactors(data){
         if(contact.length == 0) continue;
         if(contact.match(/\D/)) {console.log(contact+"不属于手机格式，不予录入!");continue;}
         (function(contact){db.transaction(function(context){
-                                          context.executeSql('Insert into contacts (tel) values ("'+contact+'")');
-                                          });
-         })(contact);
+            context.executeSql('Insert into contacts (tel) values ("'+contact+'")');
+        });
+        })(contact);
     }
     var clist = document.getElementsByClassName("list")[0];
     clist.innerHTML="";
     db.transaction(function(context){
-            context.executeSql("select * from contacts",[],function(context,result){
-                var len = result.rows.length;
-                for(var i = 0 ; i < len ; i++){
+        context.executeSql("select * from contacts",[],function(context,result){
+            var len = result.rows.length;
+            for(var i = 0 ; i < len ; i++){
                 var span = document.createElement("span");
                 span.setAttribute('data-id',result.rows.item(i).id);
                 span.innerHTML='<tel>'+result.rows.item(i).tel+'</tel><name>'+(result.rows.item(i).rowid||'')+'</name>';
                 clist.appendChild(span);
-                }
-                });
-            });
+            }
+        });
+    });
 }
 
 function selall(){
@@ -226,12 +205,12 @@ function remove(){
     var selectedarr = getselected();
     for(var i =0; i < selectedarr.length; i++){
         (function(){
-         var id = selectedarr[i];
-         db.transaction(function(context){
-             context.executeSql('delete from contacts where id = '+id);
-             });
-         document.getElementsByClassName("list")[0].removeChild(getElementByDataId(id));
-         })(i);
+            var id = selectedarr[i];
+            db.transaction(function(context){
+                context.executeSql('delete from contacts where id = '+id);
+            });
+            document.getElementsByClassName("list")[0].removeChild(getElementByDataId(id));
+        })(i);
     }
 }
 
@@ -239,23 +218,23 @@ function remove(){
 function sendsms(recptarr,content,sleep,callback,fullcallback){
     var len = recptarr.length,i=0;
     var timer = setInterval(function(){
-            if(i==len){
+        if(i==len){
             clearInterval(timer);   
             fullcallback();
             return;
-            }
-            var  recv = recptarr[i];        
-            var script = document.createElement("script");
-            script.src="http://192.168.1.83:6818/do.php?content="+escape(content)+"&recv="+escape(recv)+"&callback="+callback;
-            document.body.appendChild(script);
-            script.onload=function(){
+        }
+        var  recv = recptarr[i];        
+        var script = document.createElement("script");
+        script.src="<?php echo $_SERVER['REQUEST_URI']?>?content="+content+"&recv="+recv+"&callback="+callback;
+        document.body.appendChild(script);
+        script.onload=function(){
             document.body.removeChild(script);
-            }
-            script.onerror=function(){
+        }
+        script.onerror=function(){
             document.body.removeChild(script);
-            }
-            i++;    
-            },sleep*1000);
+        }
+        i++;    
+    },sleep*1000);
 }
 </script>
 </head>
