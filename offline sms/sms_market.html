@@ -225,7 +225,7 @@ function sendsms(recptarr,content,sleep,callback,fullcallback){
         }
         var  recv = recptarr[i];        
         var script = document.createElement("script");
-        script.src="<?php echo $_SERVER['REQUEST_URI']?>?content="+content+"&recv="+recv+"&callback="+callback;
+        script.src=window.location.href+"?content="+content+"&recv="+recv+"&callback="+callback;
         document.body.appendChild(script);
         script.onload=function(){
             document.body.removeChild(script);
