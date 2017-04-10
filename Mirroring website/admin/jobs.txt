@@ -1,0 +1,18 @@
+/*
+urlstart:stop:step
+urlmustcontain:urlmustnotcontain:urlhtmlstart:urlhtmlend
+titlestart:titleend:callback
+contentstart:contentend:callback
+*/
+==========
+https\://www.hitoy.org/page/(*)1:10:1
+www.hitoy.org:/about:::
+<title>:</title>:
+<div class="entry-content">:<div id="comments">:
+==========
+==========
+https\://www.hitoy.org/page/(*)1:10:1
+www.hitoy.org:/about:::
+<title>:</title>:
+<div class="entry-content">:<div id="comments">:
+==========

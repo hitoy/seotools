@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title><?php echo $cate_name,' - ',$webname;?></title>
+<link type="text/css" rel="stylesheet" href="<?php echo $templateurl;?>/style.css">
+</head>
+<body>
+<div class="header">
+<h1>Concrete Plant</h1>
+<ul>
+    <li><a href="/">Home</a></li>
+    <?php 
+    foreach($categorys as $cate){
+    echo "<li><a href=\"/category/".$cate['name']."\">".$cate['name']."</a>";
+    }
+    ?>
+</ul>
+</div>
+<div class="banner">
+    <img src="/template/images/banner1.jpg" alt="banner">
+</div>
+<div class="main">
+<div class="bread"> Home &gt; <?php echo "<a href=\"/category/$cate_name\">$cate_name</a>";?></div>
+<div class="sider">
+    <div class="widget">
+        <ul>
+            <li><img src="http://www.fizaexports.in/Public//product/hzs-fully-environmental-friendly-commercial-concrete-mixing-plant.jpg" alt="">
+            <a href="#">HZS Fully Environmental-friendly Commercial Concrete Mixing Plant</a>
+            </li>
+        </ul>
+    </div>
+    <div class="widget">
+        Email:zziavip@gmail.com
+    </div>
+</div>
+<div class="single">
+    <ul class="pagelist">
+        <?php 
+        foreach($pagelist as $post){
+        ?>
+        <li>
+        <img src="/uploads/default-thumbnail.jpg" alt="<?php echo $post['title']?>">
+        <a href="/<?php echo $post['slug']?>.html"><strong><?php echo $post['title']?></strong></a>
+        <p><?php echo $post['excerpt']?></p>
+        </li>
+        <?php }?>
+    </ul>
+    <ul class="page">
+    <?php 
+        echo category_page($cate_name,$page,$pages);
+    ?>
+    </ul>
+</div>
+</div>
+<div class="clear"></div>
+<div class="footer">
+    &copy;2017 CamelWay Machineray
+</div>
+</body>
+</html>

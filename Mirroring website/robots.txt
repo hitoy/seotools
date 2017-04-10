@@ -1,0 +1,7 @@
+User-agent:*
+Disallow: /caches/
+Disallow: /data/
+Disallow: /filesystem/
+Disallow: /include/
+Disallow: /install/
+Disallow: /template/
