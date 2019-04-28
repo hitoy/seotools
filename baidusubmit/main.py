@@ -28,19 +28,19 @@ while True:
         print("Baidu ZhanZhang: %s"%result)
 
         newurls = list(set(urls).difference(set(URLLIST)))
-        URLLIST.extend(newurls)
         if(len(newurls) == 0):
             print("Not New URL To Ping Baidu XiongZhang!")
-            continue
-        xurls = "\r\n".join(newurls)
+        else:
+            URLLIST.extend(newurls)
+            xurls = "\r\n".join(newurls)
 #熊掌号提交
-        res = urllib.request.Request(xiongzhangpushurl, headers = {'Content-Type': 'text/plain', 'Content-Length': len(xurls)}, data = bytes(xurls, 'utf8'))
-        result = urllib.request.urlopen(res).read().decode('utf-8')
-        print("Baidu XiongZhang: %s"%result)
+            res = urllib.request.Request(xiongzhangpushurl, headers = {'Content-Type': 'text/plain', 'Content-Length': len(xurls)}, data = bytes(xurls, 'utf8'))
+            result = urllib.request.urlopen(res).read().decode('utf-8')
+            print("Baidu XiongZhang: %s"%result)
 #熊掌周级收录
-        res = urllib.request.Request(xiongzhangweekurl, headers = {'Content-Type': 'text/plain', 'Content-Length': len(xurls)}, data = bytes(xurls, 'utf8'))
-        result = urllib.request.urlopen(res).read().decode('utf-8')
-        print("Baidu XiongZhang Week: %s"%result)
+            res = urllib.request.Request(xiongzhangweekurl, headers = {'Content-Type': 'text/plain', 'Content-Length': len(xurls)}, data = bytes(xurls, 'utf8'))
+            result = urllib.request.urlopen(res).read().decode('utf-8')
+            print("Baidu XiongZhang Week: %s"%result)
 
     except KeyboardInterrupt as e:
         break
