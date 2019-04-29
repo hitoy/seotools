@@ -29,8 +29,9 @@ while True:
 
         newurls = list(set(urls).difference(set(URLLIST)))
         if(len(newurls) == 0):
-            print("Not New URL To Ping Baidu XiongZhang!")
+            print("No New URL To Ping Baidu XiongZhang!")
         else:
+            print("New URLS Founded")
             URLLIST.extend(newurls)
             xurls = "\r\n".join(newurls)
 #熊掌号提交
