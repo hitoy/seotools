@@ -7,7 +7,7 @@ xiongzhangpushurl = "http://data.zz.baidu.com/urls?appid=1630841799366655&token=
 xiongzhangweekurl = "http://data.zz.baidu.com/urls?appid=1630841799366655&token=Gmlp2vwKtKZBtBjQ&type=batch"
 
 try:
-    sitemap = sys.argv[1]
+    sitemap = "%s?page=%s"%(sys.argv[1], time.time())
 except BaseException as e:
     print('Must Input Your Sitemap!')
     sys.exit(-1)
